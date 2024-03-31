@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const authenticateToken = require('../authenticate/authenticateToken'); // Importe a função authenticateToken
-const { insert, find } = require("../crud"); // Importar as funções insert e find do arquivo crud.js
 
 // Habilitar o uso do CORS em todas as rotas
 router.use(cors());
@@ -10,7 +9,7 @@ router.use(cors());
 // Handle POST request
 router.post('/pags', authenticateToken, async (req, res) => {
   try {
-    await insert('Pagamentos', req.body); // Usar a função insert do crud.js
+    await crud('Pagamentos', req.body); // Usar a função insert do crud.js
     res.json({ resultado: "Inserido com sucesso." });
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });
@@ -23,7 +22,7 @@ router.get('/pags', authenticateToken, async (req, res) => {
   // Adicione outros cabeçalhos CORS, se necessário
   try {
     // Handle GET request
-    const retorno = await find('Pagamentos'); // Usar a função find do crud.js
+    const retorno = await crud('Pagamentos'); 
     res.json(retorno);
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });
