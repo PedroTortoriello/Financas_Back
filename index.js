@@ -14,7 +14,7 @@ app.use(express.static('src'));
 
 // Configuração do CORS para permitir solicitações de http://localhost:5173 e https://pagamentos-d518b6d6df2c.herokuapp.com
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://pags-947922edb2c2.herokuapp.com/']
+  origin: ['http://localhost:5173', 'https://pagamento-4220a111d481.herokuapp.com/']
 }));
 
 app.use(express.json());
