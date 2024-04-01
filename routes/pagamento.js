@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const authenticateToken = require('../authenticate/authenticateToken'); // Importe a função authenticateToken
+const crud = require("../crud");
 
 // Habilitar o uso do CORS em todas as rotas
 router.use(cors());

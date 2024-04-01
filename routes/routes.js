@@ -41,7 +41,6 @@ router.route('/pesquisarDadosCadastraisParticipantes').all(authenticateToken, ro
 router.route('/login').all(authenticateToken, rotasSimples)
 router.route('/pesquisarLogin').all(authenticateToken, rotasSimples)
 
-router.route('/gestaoatv').all(authenticateToken, gestaoatv)
 router.route('/authorizedUsers').all(authenticateToken, authorizedUsers)
 
 

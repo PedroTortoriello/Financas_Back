@@ -5,17 +5,20 @@ const routes = require("./routes/routes");
 const cors = require('cors');
 
 const mongoSchemaFinanças = require("./schema/pagamento");
+const mongoSchemaLogin = require ("./schema/login")
 
 require("dotenv").config();  
 
 mongoSchemaFinanças();
+mongoSchemaLogin();
 
 app.use(express.static('src'));
 
 // Configuração do CORS para permitir solicitações de http://localhost:5173 e https://pagamentos-d518b6d6df2c.herokuapp.com
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://pagamento-4220a111d481.herokuapp.com/']
+  origin: ['http://localhost:5173', 'https://pagamento-4220a111d481.herokuapp.com'] 
 }));
+
 
 app.use(express.json());
 
