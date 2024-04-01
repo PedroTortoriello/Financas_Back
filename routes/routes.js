@@ -2,27 +2,11 @@ const express = require("express");
 const router = express.Router();
 bodyParser = require('body-parser');
 const authenticateToken = require('../authenticate/authenticateToken')
+
 const autenticacao = require('./autenticacao')
 const novoUsuario = require('./newUser')
-const webhook = require('./webhook')
-const participantes = require('./participantes')
-const importar = require('./importar')
-const exportar = require('./exportar')
-const exportarModelo = require('./exportarModelo')
-const mascarar = require('./mascarar')
-
 const rotasSimples = require('./rotasSimples')
-const extratorWord = require('./extratorWord')
-const sendWhats = require('./sendWhats')
-const sendTemplate = require('./sendWhatsTemplate')
-const exportarPdf = require('./exportarPDF')
-
-
-const finalizado = require('./finalizados')
-const gestaoatv = require('./GestaoAtv')
 const authorizedUsers = require('./authorizedUser')
-const cadastroRAT = require('./RAT')
-const nextCode = require('./nextCode')
 const Pagamentos = require ('./pagamento')
 
 router.use(bodyParser.json());
@@ -31,15 +15,7 @@ router.route('/pags2').all(authenticateToken, Pagamentos)
 router.route('/autenticacao').post(autenticacao)
 router.route('/novoUsuario').post(authenticateToken, novoUsuario)
 router.route('/pesquisar').post(authenticateToken, novoUsuario)
-router.route('/webhook').post(webhook)
-router.route('/importar').post(authenticateToken, importar)
-router.route('/participantes').all(authenticateToken, participantes)
-router.route('/pesquisarParticipantes').all(authenticateToken ,participantes)
 
-
-router.route('/exportar').post(authenticateToken, exportar)
-router.route('/exportarModelo').post(authenticateToken, exportarModelo)
-router.route('/mascarar').post(authenticateToken, mascarar)
 
 router.route('/clientes').all(authenticateToken, rotasSimples)
 router.route('/empresas').all(authenticateToken, rotasSimples)
@@ -64,16 +40,10 @@ router.route('/pesquisarRobo').all(authenticateToken, rotasSimples)
 router.route('/pesquisarDadosCadastraisParticipantes').all(authenticateToken, rotasSimples)
 router.route('/login').all(authenticateToken, rotasSimples)
 router.route('/pesquisarLogin').all(authenticateToken, rotasSimples)
-router.route('/extratorWord').all(authenticateToken, extratorWord)
-router.route('/sendWhats').post(authenticateToken, sendWhats)
-router.route('/sendTemplate').post(authenticateToken, sendTemplate)
-router.route('/exportarPDF').post(authenticateToken, exportarPdf)
 
-router.route('/finalizados').all(authenticateToken, finalizado)
 router.route('/gestaoatv').all(authenticateToken, gestaoatv)
 router.route('/authorizedUsers').all(authenticateToken, authorizedUsers)
-router.route('/rats').all(authenticateToken, cadastroRAT)
-router.route('/nextCode').get(authenticateToken, nextCode)
+
 
 router.use(express.json())
 

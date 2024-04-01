@@ -2,20 +2,16 @@ const mongoose = require("mongoose");
 
 function mongoSchemaFinanças() {
   const ticketSchema = new mongoose.Schema({
-    entradas: {
+    description: {
       type: Number,
       required: true
     },
-    saidas: {
+    amount: {
       type: String,
     }, 
-    total: {
+    date: {
       type: String,
     }, 
-    transacoes: {
-      type: String,
-    },
-
   });
 
   // Modelo para a coleção "tickets"
