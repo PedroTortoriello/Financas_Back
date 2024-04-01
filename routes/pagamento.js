@@ -7,7 +7,7 @@ const authenticateToken = require('../authenticate/authenticateToken'); // Impor
 router.use(cors());
 
 // Handle POST request
-router.post('/pags', authenticateToken, async (req, res) => {
+router.post('/pags2', authenticateToken, async (req, res) => {
   try {
     await crud('Finanças', req.body); // Usar a função insert do crud.js
     res.json({ resultado: "Inserido com sucesso." });
@@ -17,7 +17,7 @@ router.post('/pags', authenticateToken, async (req, res) => {
 });
 
 // Handle GET request
-router.get('/pags', authenticateToken, async (req, res) => {
+router.get('/pags2', authenticateToken, async (req, res) => {
   res.set('Access-Control-Allow-Origin', 'http://localhost:5173');
   // Adicione outros cabeçalhos CORS, se necessário
   try {
