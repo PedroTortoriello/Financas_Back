@@ -9,7 +9,7 @@ router.use(cors());
 // Handle POST request
 router.post('/pags', authenticateToken, async (req, res) => {
   try {
-    await crud('Pagamentos', req.body); // Usar a função insert do crud.js
+    await crud('Finanças', req.body); // Usar a função insert do crud.js
     res.json({ resultado: "Inserido com sucesso." });
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });
@@ -22,7 +22,7 @@ router.get('/pags', authenticateToken, async (req, res) => {
   // Adicione outros cabeçalhos CORS, se necessário
   try {
     // Handle GET request
-    const retorno = await crud('Pagamentos'); 
+    const retorno = await crud('Finanças'); 
     res.json(retorno);
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });
