@@ -4,11 +4,11 @@ const mongoose = require("mongoose");
 const routes = require("./routes/routes");
 const cors = require('cors');
 
-const mongoSchemaPagamentos = require("./schema/pagamento");
+const mongoSchemaFinanças = require("./schema/pagamento");
 
 require("dotenv").config();  
 
-mongoSchemaPagamentos();
+mongoSchemaFinanças();
 
 app.use(express.static('src'));
 
@@ -22,6 +22,13 @@ app.use(express.json());
 process.env.MONGODB_URI = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/?retryWrites=true&w=majority&appName=Pedro";
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on('error', err => {
+  console.error('Erro de conexão com o MongoDB:', err);
+});
+
+mongoose.connection.once('open', () => {
+  console.log('Conexão com o MongoDB estabelecida com sucesso!');
+});
 
 // routes
 app.use("/", routes);
