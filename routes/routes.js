@@ -11,7 +11,8 @@ const Pagamentos = require ('./pagamento')
 
 router.use(bodyParser.json());
 
-router.route('/pags2').all(authenticateToken, Pagamentos)
+router.route('/pags2').post(authenticateToken, Pagamentos)
+router.route('/pags2').get(authenticateToken, Pagamentos)
 router.route('/autenticacao').post(autenticacao)
 router.route('/novoUsuario').post(authenticateToken, novoUsuario)
 router.route('/pesquisar').post(authenticateToken, novoUsuario)

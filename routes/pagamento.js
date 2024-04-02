@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const authenticateToken = require('../authenticate/authenticateToken'); // Importe a função authenticateToken
-const crud = require("../crud");
+const { connect, insert, find } = require("../crud"); // Importe as funções do crud.js
 
 // Habilitar o uso do CORS em todas as rotas
 router.use(cors());
@@ -10,7 +10,8 @@ router.use(cors());
 // Handle POST request
 router.post('/pags2', authenticateToken, async (req, res) => {
   try {
-    await crud('Finanças', req.body); // Usar a função insert do crud.js
+    await connect(); // Conectar ao banco de dados antes de realizar a operação
+    await insert('Financas', req.body); // Usar a função insert do crud.js
     res.json({ resultado: "Inserido com sucesso." });
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });
@@ -23,7 +24,8 @@ router.get('/pags2', authenticateToken, async (req, res) => {
   // Adicione outros cabeçalhos CORS, se necessário
   try {
     // Handle GET request
-    const retorno = await crud('Finanças'); 
+    await connect(); // Conectar ao banco de dados antes de realizar a operação
+    const retorno = await find('Financas'); 
     res.json(retorno);
   } catch (err) {
     res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` });

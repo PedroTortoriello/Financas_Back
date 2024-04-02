@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-function mongoSchemaFinanças() {
+function mongoSchemaFinancas() {
   const ticketSchema = new mongoose.Schema({
     description: {
       type: Number,
@@ -15,7 +15,7 @@ function mongoSchemaFinanças() {
   });
 
   // Modelo para a coleção "tickets"
-  return mongoose.model('Finanças', ticketSchema);
+  return mongoose.model('Financas', ticketSchema);
 }
 
-module.exports = mongoSchemaFinanças;
+module.exports = mongoSchemaFinancas;

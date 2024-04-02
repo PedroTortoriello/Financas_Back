@@ -4,12 +4,12 @@ const mongoose = require("mongoose");
 const routes = require("./routes/routes");
 const cors = require('cors');
 
-const mongoSchemaFinanças = require("./schema/pagamento");
+const mongoSchemaFinancas = require("./schema/pagamento");
 const mongoSchemaLogin = require ("./schema/login")
 
 require("dotenv").config();  
 
-mongoSchemaFinanças();
+mongoSchemaFinancas();
 mongoSchemaLogin();
 
 app.use(express.static('src'));
@@ -22,7 +22,7 @@ app.use(cors({
 
 app.use(express.json());
 
-process.env.MONGODB_URI = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/?retryWrites=true&w=majority&appName=Pedro";
+process.env.MONGODB_URI = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/";
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', err => {
