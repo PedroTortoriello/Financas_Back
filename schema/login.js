@@ -3,13 +3,18 @@ function mongoSchemaLogin() {
   var loginSchema = new mongoose.Schema({
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     password: {
       type: String,
-      require: true
+      required: true
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: mongoose.Types.ObjectId,
+      unique: true
+    }
   })
   //Collection
   return mongoose.model("login", loginSchema);

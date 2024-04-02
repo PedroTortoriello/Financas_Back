@@ -10,9 +10,12 @@ router.post("/novoUsuario", async function (req, res) {
     req.body.password = hash;
     console.log("Senha Hash:", hash);
 
-    retorno = await crud("login", req.body, "newUser");
+    // Assuming `crud` function returns some data or message
+    const retorno = await crud("login", req.body, "newUser");
+    console.log("Retorno from CRUD:", retorno); // Log the returned data or message
     res.send(retorno).end();
   } catch (err) {
+    console.error("Error in /novoUsuario route:", err); // Log the error
     res
       .status(500)
       .json({ retorno: `Algo deu errado!, erro: ${err}` })
