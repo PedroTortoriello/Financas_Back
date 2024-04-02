@@ -10,6 +10,10 @@ function mongoSchemaLogin() {
       type: String,
       required: true
     },
+    confirmpassword: {
+      type: String,
+      required: true
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       default: mongoose.Types.ObjectId,
