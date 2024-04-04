@@ -1,6 +1,6 @@
 // crud.js
 
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb'); // Importe ObjectId do módulo mongodb
 
 const uri = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/"; // URI de conexão com o banco de dados
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -37,4 +37,16 @@ async function find(collectionName, query = {}) {
   }
 }
 
-module.exports = { connect, insert, find };
+async function remove(collectionName, id) {
+  if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+    throw new Error('ID inválido: deve ser uma string hexadecimal de 24 caracteres');
+  }
+
+  const db = client.db('FinançasApp');
+  console.log('Tentando excluir transação com ID:', id);
+  const result = await db.collection(collectionName).deleteOne({ _id: new ObjectId(id) });
+  console.log('Resultado da exclusão:', result);
+  return result;
+}
+
+module.exports = { connect, insert, find, remove, ObjectId }; // Exporte ObjectId junto com as outras funções

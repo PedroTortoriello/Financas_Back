@@ -1,6 +1,7 @@
+const mongoose = require("mongoose");
+
 function mongoSchemaLogin() {
-  const mongoose = require("mongoose");
-  var loginSchema = new mongoose.Schema({
+  const loginSchema = new mongoose.Schema({
     email: {
       type: String,
       required: true,
@@ -18,10 +19,10 @@ function mongoSchemaLogin() {
       type: mongoose.Schema.Types.ObjectId,
       default: mongoose.Types.ObjectId,
       unique: true
-    }
-  })
-  //Collection
-  return mongoose.model("login", loginSchema);
-}
+    },
+  });
+  
+  return mongoose.model('Login', loginSchema);
+};
 
 module.exports = mongoSchemaLogin;

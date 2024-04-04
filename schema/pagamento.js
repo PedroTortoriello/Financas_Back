@@ -3,18 +3,21 @@ const mongoose = require("mongoose");
 function mongoSchemaFinancas() {
   const ticketSchema = new mongoose.Schema({
     description: {
-      type: Number,
+      type: String,
       required: true
     },
     amount: {
-      type: String,
+      type: Number,
+      required: true
     }, 
     date: {
-      type: String,
+      type: Date,
+      required: true
     }, 
+    _id: mongoose.Schema.Types.ObjectId, 
   });
 
-  // Modelo para a coleção "tickets"
+  // Modelo para a coleção "financas"
   return mongoose.model('Financas', ticketSchema);
 }
 

@@ -12,6 +12,7 @@ const Pagamentos = require ('./pagamento')
 router.use(bodyParser.json());
 
 router.route('/pags2').post(authenticateToken, Pagamentos)
+router.route('/pags2/:id').delete(authenticateToken, Pagamentos)
 router.route('/pags2').get(authenticateToken, Pagamentos)
 router.route('/autenticacao').post(autenticacao)
 router.route('/novoUsuario').post(authenticateToken, novoUsuario)

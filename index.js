@@ -5,12 +5,12 @@ const routes = require("./routes/routes");
 const cors = require('cors');
 
 const mongoSchemaFinancas = require("./schema/pagamento");
-const mongoSchemaLogin = require ("./schema/login")
+const mongoSchemaLog = require('./schema/login')
 
 require("dotenv").config();  
 
 mongoSchemaFinancas();
-mongoSchemaLogin();
+mongoSchemaLog();
 
 app.use(express.static('src'));
 

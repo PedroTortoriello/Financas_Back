@@ -1,27 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const crud = require("../crud"); // Importa o objeto crud
-
-var jwt = require('jsonwebtoken');
+const { insert, find } = require("../crud"); // Importa as funções insert e find diretamente do arquivo crud.js
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 router.post("/autenticacao", async function (req, res) {
-  try {
+  try{
     let authenticate = false;
-    if (req.body.email && req.body.password) {
-      let retorno = await crud.find('login', req.body); // Chama a função find do objeto crud
+    if(req.body.email && req.body.password) {
+      let retorno = await find('login', req.body); // Use a função find para buscar o usuário pelo email
       authenticate = retorno.length > 0;
 
       if (!authenticate) {
-        retorno = await crud.find('login', { email: req.body.email }); // Chama a função find do objeto crud
-        if (retorno.length > 0) {
+        retorno = await find('login', {email: req.body.email}); // Use a função find novamente para buscar o usuário pelo email
+        if(retorno.length > 0) {
           const match = await bcrypt.compare(req.body.password, retorno[0].password);
           authenticate = match;
         }
       }
     }
 
-    if (authenticate) {
+    if(authenticate){
       const token = jwt.sign(req.body, '3Kf4W6TbAeLrP8Mxikh', {
         expiresIn: '1440m'
       });
@@ -30,9 +29,9 @@ router.post("/autenticacao", async function (req, res) {
       res.json({ authenticate: false }).end();
     }
   }
-  catch (err) {
-    res.status(500).json({ retorno: `Algo deu errado!, erro: ${err}` }).end();
+  catch(err){
+    res.status(500).json({retorno: `Algo deu errado!, erro: ${err}`}).end();
   }
-})
+}) 
 
 module.exports = router;
