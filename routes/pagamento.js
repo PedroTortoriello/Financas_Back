@@ -5,8 +5,21 @@ const cors = require('cors');
 const authenticateToken = require('../authenticate/authenticateToken'); // Importe a função authenticateToken
 const { connect, insert, find, remove } = require("../crud"); // Importe as funções do crud.js
 
-// Habilitar o uso do CORS em todas as rotas
-router.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com'];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// Movendo a configuração de CORS antes das definições de rota
+app.use(cors(corsOptions));
 
 // Handle POST request para inserir uma nova transação
 router.post('/pags2', authenticateToken, async (req, res) => {
