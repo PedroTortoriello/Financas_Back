@@ -20,6 +20,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// Movendo a configuração de CORS antes das definições de rota
 app.use(cors(corsOptions));
 
 router.post("/autenticacao", async function (req, res) {
