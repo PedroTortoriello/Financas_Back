@@ -5,7 +5,15 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 
-router.use(cors()); // Use o middleware cors
+
+
+const corsOptions = {
+  origin: 'https://tfinancas.vercel.app',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 router.post("/autenticacao", async function (req, res) {
   try{
