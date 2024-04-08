@@ -3,6 +3,9 @@ const router = express.Router();
 const { insert, find } = require("../crud"); // Importa as funções insert e find diretamente do arquivo crud.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
+
+router.use(cors()); // Use o middleware cors
 
 router.post("/autenticacao", async function (req, res) {
   try{
