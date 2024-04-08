@@ -5,10 +5,17 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 
-
+const app = express(); 
 
 const corsOptions = {
-  origin: 'https://tfinancas.vercel.app',
+  origin: function (origin, callback) {
+    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com'];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
