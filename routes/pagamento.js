@@ -38,7 +38,7 @@ router.delete('/pags2/:id', authenticateToken, async (req, res) => {
     await connect(); // Conectar ao banco de dados antes de realizar a operação
     const id = req.params.id; // Captura o ID do parâmetro da rota
     console.log('Recebido DELETE em /pags2 com ID:', id);
-    await remove('Financas', id); // Função para excluir a transação pelo ID
+    await remove('Financas', String(id));
     res.json({ resultado: "Transação excluída com sucesso." });
   } catch (err) {
     console.error('Erro ao excluir transação:', err);

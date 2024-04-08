@@ -10,8 +10,8 @@ function mongoSchemaFinancas() {
       type: Number,
       required: true
     }, 
-    date: {
-      type: Date,
+    month: {
+      type: String,
       required: true
     }, 
     _id: mongoose.Schema.Types.ObjectId, 
