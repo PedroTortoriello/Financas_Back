@@ -8,7 +8,7 @@ const { connect, insert, find, remove } = require("../crud"); // Importe as fun√
 const app = express(); 
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com'];
+    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com', 'http://localhost:5173/'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
