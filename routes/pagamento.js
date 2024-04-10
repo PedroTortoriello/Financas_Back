@@ -34,8 +34,7 @@ router.post('/pags2', authenticateToken, async (req, res) => {
 });
 
 // Handle GET request para obter todas as transações
-router.get('/pags2', authenticateToken, async (req, res) => {
-  res.set('Access-Control-Allow-Origin', 'https://tfinancas.vercel.app');
+router.get('/pags2', authenticateToken, async (_req, res) => {
   // Adicione outros cabeçalhos CORS, se necessário
   try {
     await connect(); // Conectar ao banco de dados antes de realizar a operação
