@@ -9,7 +9,7 @@ const app = express();
 
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com', 'http://localhost:5173/'];
+    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://financasback2.onrender.com', 'http://localhost:5174/'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
