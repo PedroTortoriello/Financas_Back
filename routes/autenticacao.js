@@ -21,7 +21,7 @@ const corsOptions = {
 };
 
 // Movendo a configuração de CORS antes das definições de rota
-app.use(cors());
+app.use(cors(corsOptions));
 
 router.post("/autenticacao", async function (req, res) {
   try{
