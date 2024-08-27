@@ -1,56 +1,58 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { insert, find } = require("../crud"); // Importa as funções insert e find diretamente do arquivo crud.js
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const cors = require('cors');
+const crud = require('../crud');
+const { comparePassword } = require('../authenticate/cripto'); // Ajuste conforme necessário
+const jwt = require('jsonwebtoken'); // Adicione a biblioteca jwt
 
-const app = express(); 
+// Rota de autenticação
+router.post('/autenticacao', async (req, res) => {
+  const { email, password } = req.body;
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = ['https://tfinancas.vercel.app', 'https://financasback2.onrender.com', 'http://localhost:5174/'];
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+  if (!email || !password) {
+    return res.status(400).json({ authenticate: false, error: 'Email e senha são obrigatórios' });
+  }
+
+  try {
+    // Busca o usuário usando a função crud
+    const users = await crud('logins', { email: email.toLowerCase() }, 'find'); // Busca com email em minúsculas
+    const user = users.length ? users[0] : null;
+
+    if (!user) {
+      return res.status(401).json({ authenticate: false, error: 'Usuário não encontrado' });
     }
-  },
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
 
-// Movendo a configuração de CORS antes das definições de rota
-app.use(cors(corsOptions));
+    // Verifica se a senha está correta
+    const passwordMatches = await comparePassword(password, user.password);
 
-router.post("/autenticacao", async function (req, res) {
-  try{
-    let authenticate = false;
-    if(req.body.email && req.body.password) {
-      let retorno = await find('login', req.body); // Use a função find para buscar o usuário pelo email
-      authenticate = retorno.length > 0;
+    if (!passwordMatches) {
+      return res.status(401).json({ authenticate: false, error: 'Senha incorreta' });
+    }
 
-      if (!authenticate) {
-        retorno = await find('login', {email: req.body.email}); // Use a função find novamente para buscar o usuário pelo email
-        if(retorno.length > 0) {
-          const match = await bcrypt.compare(req.body.password, retorno[0].password);
-          authenticate = match;
-        }
+    // Armazena as informações do usuário na sessão
+    req.session.email = user.email;
+    req.session.userId = user.id;
+    console.log('Sessão antes de salvar:', req.session); // Log para depuração
+
+    // Gera o token JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      '3Kf4W6TbAeLrP8Mxikh', // Chave secreta para assinatura do token
+      { expiresIn: '1440m' } // Tempo de expiração do token
+    );
+
+    // Salva a sessão e envia a resposta
+    req.session.save((err) => {
+      if (err) {
+        console.error('Erro ao salvar sessão:', err);
+        return res.status(500).json({ authenticate: false, error: 'Erro interno ao salvar sessão' });
       }
-    }
+      res.status(200).json({ authenticate: true, token, message: 'Autenticação bem-sucedida' });
+    });
 
-    if(authenticate){
-      const token = jwt.sign(req.body, '3Kf4W6TbAeLrP8Mxikh', {
-        expiresIn: '1440m'
-      });
-      res.json({ authenticate: true, token }).end();
-    } else {
-      res.json({ authenticate: false }).end();
-    }
+  } catch (error) {
+    console.error('Erro ao autenticar:', error);
+    res.status(500).json({ authenticate: false, error: 'Erro interno do servidor' });
   }
-  catch(err){
-    res.status(500).json({retorno: `Algo deu errado!, erro: ${err}`}).end();
-  }
-}) 
+});
 
 module.exports = router;

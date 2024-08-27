@@ -1,52 +1,53 @@
-// crud.js
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
-const { MongoClient, ObjectId } = require('mongodb'); // Importe ObjectId do módulo mongodb
+/**
+ * Função CRUD genérica
+ * @param {string} tabela - Nome da coleção
+ * @param {object} registro - Dados para a operação
+ * @param {string} operacao - Tipo da operação a ser realizada
+ * @returns {Promise} Resultado da operação
+ */
+// Função CRUD genérica
+async function crud(tabela, registro, operacao) {
+  const mongoose = require("mongoose");
+  const modelo = mongoose.model(tabela);
+  let resultado = "";
 
-const uri = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/"; // URI de conexão com o banco de dados
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-async function connect() {
-  try {
-    await client.connect();
-    console.log('Conectado ao banco de dados');
-  } catch (error) {
-    console.error('Erro ao conectar ao banco de dados:', error);
-  }
-}
-
-async function insert(collectionName, data) {
-  try {
-    const db = client.db('FinançasApp'); // Corrija o nome do banco de dados aqui
-    const collection = db.collection(collectionName);
-    await collection.insertOne(data);
-    console.log('Dados inseridos com sucesso');
-  } catch (error) {
-    console.error('Erro ao inserir dados:', error);
-    throw error; // Lançar o erro para ser tratado na chamada da função
-  }
-}
-
-async function find(collectionName, query = {}) {
-  try {
-    const db = client.db('FinançasApp'); // Corrija o nome do banco de dados aqui
-    const collection = db.collection(collectionName);
-    return await collection.find(query).toArray();
-  } catch (error) {
-    console.error('Erro ao buscar dados:', error);
-    throw error; // Lançar o erro para ser tratado na chamada da função
-  }
-}
-
-async function remove(collectionName, id) {
-  if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-    throw new Error('ID inválido: deve ser uma string hexadecimal de 24 caracteres');
+  // Busca registro
+  if (operacao === "find") {
+    resultado = await modelo.find(registro); // Usando `find` para consultas genéricas
   }
 
-  const db = client.db('FinançasApp');
-  console.log('Tentando excluir transação com ID:', id);
-  const result = await db.collection(collectionName).deleteOne({ _id: new ObjectId(id) });
-  console.log('Resultado da exclusão:', result);
-  return result;
+  // Insere registro
+  if (operacao === "insert") {
+    resultado = await new modelo(registro).save();
+  }
+
+  // Insere múltiplos registros
+  if (operacao === "insertMany") {
+    resultado = await modelo.insertMany(registro);
+  }
+
+  // Atualiza registro
+  if (operacao === "update") {
+    resultado = await modelo.updateOne({ _id: registro._id }, registro);
+  }
+
+  // Cria usuário
+  if (operacao === "newUser") {
+    const existingUser = await modelo.findOne({ email: registro.email });
+    if (existingUser) {
+      return { result: "Usuário já existe na base." };
+    } else {
+      resultado = await new modelo(registro).save();
+      return { result: "Usuário inserido com sucesso." };
+    }
+  }
+
+  return resultado;
 }
 
-module.exports = { connect, insert, find, remove, ObjectId }; // Exporte ObjectId junto com as outras funções
+
+
+module.exports = crud;

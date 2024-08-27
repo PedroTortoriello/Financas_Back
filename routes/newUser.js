@@ -1,22 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const { insert } = require("../crud"); // Import the insert function from crud.js
+const { v4: uuidv4 } = require("uuid");
+const crud = require("../crud");
 const hashPassword = require("../authenticate/cripto");
 
-router.post("/novoUsuario", async function (req, res) {
-  try {
-    let plainPassword = req.body.password;
-    const hash = await hashPassword(plainPassword);
-    req.body.password = hash;
-    console.log("Senha Hash:", hash);
+router.post("/newUsers", async (req, res) => {
+  const { email, password, userName } = req.body; // Adiciona userName ao body
 
-    // Call the insert function from the crud object
-    await insert("login", req.body); // Assuming "login" is the collection name
-    
-    res.json({ message: "Usuário cadastrado com sucesso!" }).end();
-  } catch (err) {
-    console.error("Erro ao cadastrar usuário:", err);
-    res.status(500).json({ message: "Algo deu errado!", error: err.message }).end();
+  // Validações
+  if (!email || !password || !userName) {
+    return res.status(400).json({ success: false, error: 'Email, senha e nome de usuário são obrigatórios' });
+  }
+
+  if (!email.endsWith('@gmail.com')) {
+    return res.status(401).json({ success: false, error: 'Domínio de email inválido' });
+  }
+
+  try {
+    const id = uuidv4();
+    const hashedPassword = await hashPassword(password);
+
+    const userData = {
+      id,
+      email,
+      userName, // Inclui o userName no objeto userData
+      password: hashedPassword,
+    };
+
+    const retorno = await crud("login", userData, "newUser");
+
+    res.status(201).json({ success: true, data: retorno, message: 'Usuário cadastrado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao cadastrar usuário:', error);
+    res.status(500).json({ success: false, error: 'Erro interno do servidor' });
   }
 });
 

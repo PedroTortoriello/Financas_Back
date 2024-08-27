@@ -1,45 +1,75 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const routes = require("./routes/routes");
+require('dotenv').config(); // Carregar variáveis de ambiente do arquivo .env
+const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
+const routes = require("./routes/routes");
 
-const mongoSchemaFinancas = require("./schema/pagamento");
-const mongoSchemaLog = require('./schema/login')
+// Importar esquemas
+const Card = require('./schemas/cartoes');
+const Category = require('./schemas/categorias');
+const Transaction = require('./schemas/financas');
+const login = require('./schemas/login');
+const Session = require('./schemas/sessions');
+const newUser = require('./schemas/newUser');
 
-require("dotenv").config();  
+// Inicializar esquemas
+Card();
+Category();
+Transaction();
+login();
+Session();
+newUser();
 
-mongoSchemaFinancas();
-mongoSchemaLog();
+const app = express();
 
-app.use(express.static('src'));
-
-// Configuração do CORS para permitir solicitações de http://localhost:5173 e https://pagamentos-d518b6d6df2c.herokuapp.com
+// Configuração de CORS
 const corsOptions = {
-  origin: ['https://tfinancas.vercel.app', 'https://pagamento-4220a111d481.herokuapp.com' ] 
+  origin: 'http://localhost:5173',
+  credentials: true,
 };
-
 app.use(cors(corsOptions));
 
 
 app.use(express.json());
 
-process.env.MONGODB_URI = "mongodb+srv://pedrooofreitas:JqzMfX9bhJrcWsyz@pedro.aropozx.mongodb.net/";
+const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8cZ2wDk422tg@pedro.aropozx.mongodb.net/FinançasApp'; // Substitua pelo seu URI do MongoDB
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connection.on('error', err => {
-  console.error('Erro de conexão com o MongoDB:', err);
+// Configuração de sessão
+const sessionStore = MongoStore.create({
+  mongoUrl: process.env.MONGODB_URI,
+  collectionName: 'sessions',
+  stringify: false, // Adicione esta linha para evitar a stringificação da sessão antes de salvar
 });
 
-mongoose.connection.once('open', () => {
-  console.log('Conexão com o MongoDB estabelecida com sucesso!');
+app.use(session({
+  secret: '110221', 
+  resave: false,
+  saveUninitialized: false,
+  store: sessionStore,
+  cookie: {
+    secure: false, // Usar true se estiver em produção com HTTPS
+    maxAge: 24 * 60 * 60 * 1000 // Expiração do cookie em 1 dia
+  }
+}));
+
+// Conectar ao MongoDB
+mongoose.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('Conectado ao MongoDB');
+}).catch(err => {
+  console.error('Erro ao conectar ao MongoDB', err);
+  process.exit(1); // Encerre o processo em caso de erro de conexão
 });
 
-// routes
+// Configuração das rotas
 app.use("/", routes);
 
-// Server
-const porta = 3000
-app.listen(process.env.PORT || porta, () => {
-  console.log("Servidor rodando na porta: " + (process.env.PORT || porta));
+// Inicializar servidor
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta: ${port}`);
 });
