@@ -6,12 +6,11 @@ const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const routes = require("./routes/routes");
 
-// Importar esquemas
+// Importar e inicializar esquemas (exceto para sessões)
 const Card = require('./schemas/cartoes');
 const Category = require('./schemas/categorias');
 const Transaction = require('./schemas/financas');
 const login = require('./schemas/login');
-const Session = require('./schemas/sessions');
 const newUser = require('./schemas/newUser');
 
 // Inicializar esquemas
@@ -19,7 +18,6 @@ Card();
 Category();
 Transaction();
 login();
-Session();
 newUser();
 
 const app = express();
@@ -41,11 +39,10 @@ const sessionStore = MongoStore.create({
   collectionName: 'sessions',
   stringify: false,
   ttl: 24 * 60 * 60, // 1 dia em segundos
-  autoRemove: 'native', // Remove sessões expiradas automaticamente
+  autoRemove: 'native',
   autoRemoveInterval: 10, // Remover sessões a cada 10 minutos
-  touchAfter: 24 * 3600 // Tempo em segundos para salvar sessões inalteradas
+  touchAfter: 24 * 3600, // Tempo em segundos para salvar sessões inalteradas
 });
-
 
 app.use(session({
   secret: '110221',
@@ -54,8 +51,8 @@ app.use(session({
   store: sessionStore,
   cookie: {
     secure: false,
-    maxAge: 24 * 60 * 60 * 1000
-  }
+    maxAge: 24 * 60 * 60 * 1000, // 1 dia
+  },
 }));
 
 // Conectar ao MongoDB
