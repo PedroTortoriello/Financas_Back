@@ -59,11 +59,15 @@ app.use(session({
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => {
+}).then(async () => {
   console.log('Conectado ao MongoDB');
+  // Limpar a coleção de sessões
+  const db = mongoose.connection.db;
+  await db.collection('sessions').deleteMany({ session_id: null });
+  console.log('Coleção de sessões limpa');
+  process.exit(0); // Encerre o processo após limpeza
 }).catch(err => {
   console.error('Erro ao conectar ao MongoDB', err);
-  process.exit(1); // Encerre o processo em caso de erro de conexão
 });
 
 // Configuração das rotas

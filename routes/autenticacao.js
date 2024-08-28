@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid'); // Importar uuidv4
 const crud = require('../crud');
-const { comparePassword } = require('../authenticate/cripto'); // Ajuste conforme necessário
+const { comparePassword } = require('../authenticate/cripto');
 const jwt = require('jsonwebtoken'); // Adicione a biblioteca jwt
-const { v4: uuidv4 } = require("uuid");
 
 // Rota de autenticação
 router.post('/autenticacao', async (req, res) => {
@@ -30,7 +30,6 @@ router.post('/autenticacao', async (req, res) => {
     }
 
     // Armazena as informações do usuário na sessão
-    req.session.session_id = uuidv4();
     req.session.email = user.email;
     req.session.userId = user.id;
     console.log('Sessão antes de salvar:', req.session); // Log para depuração
