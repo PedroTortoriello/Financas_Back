@@ -24,7 +24,7 @@ const app = express();
 
 // Configuração de CORS
 const corsOptions = {
-  origin: ['https://financas-front.onrender.com', 'http://localhost:5173'], // Remova a barra final do localhost
+  origin: 'https://financas-front.onrender.com', // Remova a barra final do localhost
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -40,7 +40,7 @@ const sessionStore = MongoStore.create({
   stringify: false,
   ttl: 24 * 60 * 60, // 1 dia em segundos
   autoRemove: 'native',
-  autoRemoveInterval: 10, // Remover sessões a cada 10 minutos
+  autoRemoveInterval: 1, // Remover sessões a cada 10 minutos
   touchAfter: 24 * 3600, // Tempo em segundos para salvar sessões inalteradas
 });
 
