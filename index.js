@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-const mongoUrl = process.env.MONGODB_URI;
+const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8cZ2wDk422tg@pedro.aropozx.mongodb.net/FinançasApp'; // Substitua pelo seu URI do MongoDB
 
 // Configuração de sessão
 const sessionStore = MongoStore.create({
