@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8cZ2wDk422tg@pedro.aropozx.mongodb.net/FinançasApp'; // Substitua pelo seu URI do MongoDB
+const mongoUrl = process.env.MONGODB_URI;
 
 // Configuração de sessão
 const sessionStore = MongoStore.create({
@@ -69,7 +69,7 @@ mongoose.connect(mongoUrl, {
 app.use("/", routes);
 
 // Inicializar servidor
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, () => {
   console.log(`Servidor rodando na porta: ${port}`);
 });
