@@ -38,7 +38,7 @@ const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8c
 
 // Configuração de sessão
 const sessionStore = MongoStore.create({
-  mongoUrl: process.env.MONGODB_URI,
+  mongoUrl: mongoUrl, // Use a variável mongoUrl que já tem um fallback
   collectionName: 'sessions',
   stringify: false, // Adicione esta linha para evitar a stringificação da sessão antes de salvar
 });
