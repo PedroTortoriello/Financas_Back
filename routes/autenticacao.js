@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid'); // Importar uuidv4
 const crud = require('../crud');
-const { comparePassword } = require('../authenticate/cripto');
+const { comparePassword } = require('../authenticate/cripto'); // Ajuste conforme necessário
 const jwt = require('jsonwebtoken'); // Adicione a biblioteca jwt
 
 // Rota de autenticação
