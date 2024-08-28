@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const crud = require('../crud');
-const { comparePassword } = require('../authenticate/cripto'); // Ajuste conforme necessário
-const jwt = require('jsonwebtoken'); // Adicione a biblioteca jwt
+const { comparePassword } = require('../authenticate/cripto');
+const jwt = require('jsonwebtoken');
 
 // Rota de autenticação
 router.post('/autenticacao', async (req, res) => {

@@ -50,7 +50,7 @@ app.use(session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: {
-    secure: false,
+    secure: false, // Defina como true se estiver usando HTTPS
     maxAge: 24 * 60 * 60 * 1000, // 1 dia
   },
 }));
@@ -59,13 +59,8 @@ app.use(session({
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(async () => {
+}).then(() => {
   console.log('Conectado ao MongoDB');
-  // Limpar a coleção de sessões
-  const db = mongoose.connection.db;
-  await db.collection('sessions').deleteMany({ session_id: null });
-  console.log('Coleção de sessões limpa');
-  process.exit(0); // Encerre o processo após limpeza
 }).catch(err => {
   console.error('Erro ao conectar ao MongoDB', err);
 });
