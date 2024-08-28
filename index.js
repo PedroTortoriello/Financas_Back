@@ -29,7 +29,7 @@ const corsOptions = {
   origin: 'https://financas-front.onrender.com', // Remova a barra final
   credentials: true,
 };
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 app.use(express.json());
