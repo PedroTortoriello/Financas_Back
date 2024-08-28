@@ -50,7 +50,7 @@ app.use(session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: {
-    secure: false, // Defina como true se estiver usando HTTPS
+    secure: true, // Defina como true se estiver usando HTTPS
     maxAge: 24 * 60 * 60 * 1000, // 1 dia
   },
 }));
