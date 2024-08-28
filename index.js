@@ -26,7 +26,7 @@ const app = express();
 
 // Configuração de CORS
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: 'https://financas-front.onrender.com',
   credentials: true,
 };
 app.use(cors(corsOptions));
