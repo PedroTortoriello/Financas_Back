@@ -7,6 +7,7 @@ const pagamentos = require("./pagamentos");
 const cartao = require("./cartao");
 const categorias = require("./categorias");
 const authorizedUsers = require("./authorizedUser");
+const novoUsuario = require("./newUser");
 
 
 router.use(bodyParser.json());
@@ -16,7 +17,7 @@ router.route("/financas").post(authenticateToken, pagamentos);
 router.route("/financas").get(authenticateToken, pagamentos);
 router.route("/category").get(authenticateToken, categorias);
 router.route("/autenticacao").post(authenticateToken, cartao);
-router.route("/autenticacao").post(autenticacao);
+router.route("/newUsers").post(novoUsuario);
 
 
 router.use(express.json());
