@@ -31,8 +31,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-
-
 app.use(express.json());
 
 const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8cZ2wDk422tg@pedro.aropozx.mongodb.net/FinançasApp'; // Substitua pelo seu URI do MongoDB
@@ -42,9 +40,12 @@ const sessionStore = MongoStore.create({
   mongoUrl: mongoUrl,
   collectionName: 'sessions',
   stringify: false,
-  ttl: 24 * 60 * 60, // Tempo de vida da sessão em segundos (1 dia)
-  autoRemove: 'native', // Remove automaticamente sessões expiradas
+  ttl: 24 * 60 * 60, // 1 dia em segundos
+  autoRemove: 'native', // Remove sessões expiradas automaticamente
+  autoRemoveInterval: 10, // Remover sessões a cada 10 minutos
+  touchAfter: 24 * 3600 // Tempo em segundos para salvar sessões inalteradas
 });
+
 
 app.use(session({
   secret: '110221',
