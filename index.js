@@ -26,10 +26,11 @@ const app = express();
 
 // Configuração de CORS
 const corsOptions = {
-  origin: 'https://financas-front.onrender.com', // Remova a barra final
+  origin: ['https://financas-front.onrender.com', 'http://localhost:5173'], // Remova a barra final do localhost
   credentials: true,
 };
 app.use(cors(corsOptions));
+
 
 
 app.use(express.json());
@@ -38,19 +39,21 @@ const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://pedrooofreitas:dGMr8c
 
 // Configuração de sessão
 const sessionStore = MongoStore.create({
-  mongoUrl: mongoUrl, // Use a variável mongoUrl que já tem um fallback
+  mongoUrl: mongoUrl,
   collectionName: 'sessions',
-  stringify: false, // Adicione esta linha para evitar a stringificação da sessão antes de salvar
+  stringify: false,
+  ttl: 24 * 60 * 60, // Tempo de vida da sessão em segundos (1 dia)
+  autoRemove: 'native', // Remove automaticamente sessões expiradas
 });
 
 app.use(session({
-  secret: '110221', 
+  secret: '110221',
   resave: false,
   saveUninitialized: false,
   store: sessionStore,
   cookie: {
-    secure: false, // Usar true se estiver em produção com HTTPS
-    maxAge: 24 * 60 * 60 * 1000 // Expiração do cookie em 1 dia
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 const crud = require("../crud");
-const hashPassword = require("../authenticate/cripto");
+const {hashPassword} = require("../authenticate/cripto");
 
 router.post("/newUsers", async (req, res) => {
   const { email, password, userName } = req.body; // Adiciona userName ao body
@@ -27,7 +27,7 @@ router.post("/newUsers", async (req, res) => {
       password: hashedPassword,
     };
 
-    const retorno = await crud("login", userData, "newUser");
+    const retorno = await crud("logins", userData, "newUser");
 
     res.status(201).json({ success: true, data: retorno, message: 'Usuário cadastrado com sucesso' });
   } catch (error) {

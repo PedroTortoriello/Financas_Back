@@ -44,6 +44,7 @@ router.post('/autenticacao', async (req, res) => {
     req.session.save((err) => {
       if (err) {
         console.error('Erro ao salvar sessão:', err);
+        console.error('Estado da sessão:', req.session);
         return res.status(500).json({ authenticate: false, error: 'Erro interno ao salvar sessão' });
       }
       res.status(200).json({ authenticate: true, token, message: 'Autenticação bem-sucedida' });
