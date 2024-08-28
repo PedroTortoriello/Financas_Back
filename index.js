@@ -27,16 +27,31 @@ const sessionStore = MongoStore.create({
   touchAfter: 24 * 3600, // Tempo em segundos para salvar sessões inalteradas
 });
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: sessionStore,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production', // Define como true se estiver em produção
-    maxAge: 24 * 60 * 60 * 1000, // 1 dia
-  },
-}));
+if (process.env.NODE_ENV === 'production') {
+  // Configurações específicas para produção
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      secure: true, // Apenas se estiver usando HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 1 dia
+    },
+  }));
+} else {
+  // Configurações para desenvolvimento
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      secure: false, // Defina como false em desenvolvimento se não usar HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 1 dia
+    },
+  }));
+}
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
