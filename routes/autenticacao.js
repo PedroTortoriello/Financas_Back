@@ -29,6 +29,7 @@ router.post('/autenticacao', async (req, res) => {
     }
 
     // Armazena as informações do usuário na sessão
+    req.session.session_id = uuidv4();
     req.session.email = user.email;
     req.session.userId = user.id;
     console.log('Sessão antes de salvar:', req.session); // Log para depuração
