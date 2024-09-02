@@ -16,6 +16,7 @@ router.route("/autenticacao").post(autenticacao);
 router.route("/financas").post(authenticateToken, pagamentos);
 router.route("/financas").get(authenticateToken, pagamentos);
 router.route("/category").get(authenticateToken, categorias);
+router.route("/category").post(authenticateToken, categorias);
 router.route("/autenticacao").post(authenticateToken, cartao);
 router.route("/newUsers").post(novoUsuario);
 
